@@ -30,6 +30,12 @@ server <- function(input, output) {
   })
   output$story <- renderText({
     req(input$noun1, input$verb, input$adjective, input$adverb)
+    shiny::validate(
+      need(input(input$noun1 != '', 'Enter a noun.')),
+      need(input(input$verb != '', 'Enter a verb.')),
+      need(input(input$adjective != '', 'Enter an adjective.')),
+      need(input(input$adverb != '', 'Enter a adverb.'))
+    )
     story()
   })
 }
