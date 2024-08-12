@@ -1,10 +1,14 @@
 library(shiny)
+library(useself)
 
 generate_story <- function(noun, verb, adjective, adverb) {
-  glue::glue("
+  story <- glue::glue("
     Once upon a time, in a land far, far, away, there was a {adjective} {noun} who loved to
     {verb} {adverb}. The {noun} was the {adjective}est {noun} in all of the land!
   ")
+
+  cat(story, file = stderr())
+  story
 }
 
 ui <- fluidPage(
@@ -30,12 +34,6 @@ server <- function(input, output) {
   })
   output$story <- renderText({
     req(input$noun1, input$verb, input$adjective, input$adverb)
-    shiny::validate(
-      need(input(input$noun1 != '', 'Enter a noun.')),
-      need(input(input$verb != '', 'Enter a verb.')),
-      need(input(input$adjective != '', 'Enter an adjective.')),
-      need(input(input$adverb != '', 'Enter a adverb.'))
-    )
     story()
   })
 }
